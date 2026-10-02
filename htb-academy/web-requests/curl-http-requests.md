@@ -1,7 +1,6 @@
 # cURL & HTTP Requests — Study Notes
 
-Beginner-friendly revision notes for the **HTB Academy – Web Requests** module.
-Simple English, with short Egyptian Arabic notes (**بالمصري**) where they help.
+Reference notes for the **HTB Academy – Web Requests** module, organized from HTTP fundamentals to a practical browser-to-cURL workflow.
 
 > [!NOTE]
 > All examples target `localhost`, `example.com`, or an authorized HTB lab (`SERVER_IP:PORT`).
@@ -27,8 +26,6 @@ Simple English, with short Egyptian Arabic notes (**بالمصري**) where they
 
 **cURL** (*Client URL*) is a command-line tool that **sends a request to a URL and prints the response**.
 
-> **بالمصري:** cURL بيعمل نفس اللي المتصفح بيعمله (يبعت request ويستلم response)، بس من الـ terminal ومن غير واجهة.
-
 ```bash
 curl http://example.com
 ```
@@ -50,12 +47,10 @@ This sends a **GET** request and prints the page's HTML.
 
 ## 2. What is an HTTP Request?
 
-**HTTP** is the language browsers and servers use to talk.
+**HTTP** (*HyperText Transfer Protocol*) is the protocol clients and servers use to exchange data on the web.
 
 - **Request** → sent by the **client** (browser or cURL) to the **server**
 - **Response** → sent back by the **server**
-
-> **بالمصري:** الـ request هو الطلب اللي بتقوله للكاشير، والـ response هو اللي بيرجعلك.
 
 ### A request
 
@@ -120,11 +115,11 @@ A **status code** is the 3-digit number in the response that says what happened.
 
 | Range | Category | Meaning |
 | ----- | -------- | ------- |
-| `1xx` | Informational | "Received, continue" |
-| `2xx` | Success | It worked |
+| `1xx` | Informational | Request received, processing continues |
+| `2xx` | Success | Request completed successfully |
 | `3xx` | Redirection | Go to another URL |
 | `4xx` | Client error | Something is wrong with **your request** |
-| `5xx` | Server error | Something broke **on the server** |
+| `5xx` | Server error | The server failed to handle a valid request |
 
 ### Codes to remember
 
@@ -142,8 +137,8 @@ A **status code** is the 3-digit number in the response that says what happened.
 
 > [!IMPORTANT]
 > **401 vs 403**
-> - `401` → "Who are you?" Log in first.
-> - `403` → "I know who you are, but no." Logging in won't help.
+> - `401` → The client is **not authenticated**. Valid credentials or a session are required.
+> - `403` → The client is identified but **not authorized**. Authenticating again will not change the result.
 
 > [!TIP]
 > cURL does **not** follow redirects by default. Add `-L` to follow them.
@@ -168,8 +163,6 @@ curl -X DELETE http://localhost/api/users/5
 | No `-X`, no `-d` | `GET` |
 | `-d` with no `-X` | `POST`, chosen automatically |
 | `-X PUT` | `PUT` |
-
-> **بالمصري:** لو حطيت `-d` من غير `-X`، cURL بيعتبره POST لوحده. كتابة `-X POST` بتخلي الأمر أوضح بس.
 
 ---
 
@@ -285,8 +278,6 @@ curl -b cookies.txt http://localhost/dashboard.php
 | `-c file` | Server → file | **C**ollect |
 | `-b file` | File → server | **B**ring |
 
-> **بالمصري:** `-c` = خزّن الكوكيز اللي السيرفر إداهالك. `-b` = ابعت الكوكيز للسيرفر.
-
 Full explanation: [`-b` vs `-c` — MUST REMEMBER](#27--b-vs--c--must-remember)
 
 ---
@@ -346,11 +337,12 @@ curl -v http://localhost/
 
 | | `-i` | `-v` |
 | --- | --- | --- |
-| Response headers | ✅ | ✅ |
-| Request headers | ❌ | ✅ |
-| Connection details | ❌ | ✅ |
+| Response headers | Yes | Yes |
+| Request headers | No | Yes |
+| Connection details | No | Yes |
 
-> **بالمصري:** لو حاجة مش شغالة، ضيف `-v` وبص على سطور الـ `>` عشان تعرف إنت بعت إيه بالظبط.
+> [!TIP]
+> When a request fails, add `-v` and review the `>` lines to confirm exactly what was sent.
 
 ---
 
@@ -388,8 +380,6 @@ curl -s -o users.json http://localhost/api/users
 ## 14. Cookies
 
 A **cookie** is a small `name=value` piece of data that the **server asks the browser to store**. The browser then **sends it back** with every later request to that site.
-
-> **بالمصري:** الكوكي زي "باج" السيرفر بيديهولك، وكل ما ترجعله بتوريهوله عشان يفتكرك.
 
 **Why do cookies exist?** HTTP is **stateless**: the server doesn't remember you between requests. Cookies give it a memory.
 
@@ -441,8 +431,6 @@ A **session** is how the server **remembers a user across requests**, for exampl
 
 - Your data (who you are, logged in or not) is stored **on the server**.
 - You only hold a random **session ID**, inside a cookie.
-
-> **بالمصري:** الـ session زي ملف محفوظ عند السيرفر، وإنت معاك بس "رقم الملف" (session ID) في الكوكي.
 
 **`PHPSESSID`** = **PHP** **Sess**ion **ID**, PHP's default session cookie name. Other frameworks use other names, such as `JSESSIONID` (Java) or `connect.sid` (Express).
 
@@ -509,10 +497,10 @@ An **object** is wrapped in `{ }` and holds **key/value pairs**:
 
 | JSON | Valid? | Why |
 | ---- | ------ | --- |
-| `{"city":"london"}` | ✅ | |
-| `{'city':'london'}` | ❌ | Single quotes |
-| `{"city":"london",}` | ❌ | Trailing comma |
-| `{city:"london"}` | ❌ | Key without quotes |
+| `{"city":"london"}` | Yes | — |
+| `{'city':'london'}` | No | Single quotes |
+| `{"city":"london",}` | No | Trailing comma |
+| `{city:"london"}` | No | Key without quotes |
 
 ---
 
@@ -604,7 +592,7 @@ curl -X POST \
 | ---- | ------ |
 | 1 | Press **F12** (or `Ctrl+Shift+I`) |
 | 2 | Open the **Network** tab |
-| 3 | Click **Clear** 🚫 to remove old requests |
+| 3 | Click **Clear** to remove old requests |
 | 4 | **Do the action** (search, submit a form, log in…) |
 | 5 | **Find the request** (filter by `Fetch/XHR` or search by name, e.g. `search.php`) |
 | 6 | Click it and check the details below |
@@ -669,7 +657,7 @@ curl -X POST \
   http://SERVER_IP:PORT/search.php
 ```
 
-> **بالمصري:** الهدف مش copy-paste وخلاص. افهم كل سطر بيعمل إيه، وشيل الزيادة، عشان تعرف السيرفر محتاج إيه فعلاً.
+The goal is to identify the minimum request the server actually requires, rather than replaying the browser's request unchanged.
 
 > [!CAUTION]
 > The copied command contains **your real session cookie**. Don't paste it into public chats or write-ups.
@@ -743,7 +731,7 @@ curl -X POST \
   http://SERVER_IP:PORT/search.php
 ```
 
-If the response matches what the browser got, you reproduced it correctly. ✅
+If the response matches what the browser got, you reproduced it correctly.
 
 ---
 
@@ -785,7 +773,7 @@ Content-Length: 19
 
 | Removed | Likely result |
 | ------- | ------------- |
-| `-b ...` | You look logged out: redirect, `401`, `403`, or empty results |
+| `-b ...` | The request is unauthenticated: redirect, `401`, `403`, or empty results |
 | `-H 'Content-Type...'` | The server may not parse the JSON |
 | `-X POST` | Still POST, because `-d` is there |
 | `-d ...` | A POST with no body, so probably no results |
@@ -902,10 +890,8 @@ Server
 | Action | **Writes** (saves) | **Reads** (sends) |
 | Header involved | `Set-Cookie` in the response | `Cookie` in the request |
 | Direction | Server → file | File → server |
-| Direct value like `'PHPSESSID=abc'`? | ❌ File only | ✅ Value or file |
+| Direct value like `'PHPSESSID=abc'`? | No (file only) | Yes (value or file) |
 | Memory trick | **C**ollect | **B**ring |
-
-> **بالمصري:** `-c` = خد الكوكيز من السيرفر وحطها في الملف. `-b` = هات الكوكيز من الملف وابعتها للسيرفر.
 
 ```bash
 curl -c cookies.txt -d 'username=admin&password=admin' http://localhost/login.php   # save
@@ -939,7 +925,7 @@ Answer these 7 questions for **any** request and you can rebuild it yourself:
 - cURL is a command-line HTTP client.
 - Request = method + URL + headers + (body). Response = status + headers + body.
 - GET reads · POST sends · PUT updates · DELETE deletes.
-- 2xx success · 3xx redirect · 4xx your mistake · 5xx server's mistake.
+- 2xx success · 3xx redirect · 4xx client error · 5xx server error.
 - `401` not logged in · `403` not allowed · `404` not found · `302` redirect, often after login.
 - HTTP is stateless, so cookies and sessions give it memory.
 - `Set-Cookie` (server gives) → `Cookie` (client sends back).

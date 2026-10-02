@@ -1,7 +1,6 @@
 # Cybersecurity Notes
 
-Personal study notes from my cybersecurity learning journey, mainly **HTB Academy**.
-Written in simple English with Egyptian Arabic explanations where they help.
+Structured study notes on cybersecurity and web security, based primarily on **HTB Academy** modules.
 
 ## Notes
 
