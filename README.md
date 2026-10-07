@@ -8,6 +8,7 @@ Structured study notes on cybersecurity and web security, based primarily on **H
 | ----- | ------ | ----- |
 | Web Requests | HTB Academy | [cURL & HTTP Requests](htb-academy/web-requests/curl-http-requests.md) |
 | Web Proxies | HTB Academy | [Burp Repeater & OS Command Injection](htb-academy/web-proxies/burp-repeater-command-injection.md) |
+| Web Proxies | HTB Academy | [Metasploit Through a Web Proxy](htb-academy/web-proxies/metasploit.md) |
 
 ## Structure
 
@@ -17,7 +18,8 @@ cybersecurity-notes/
     ├── web-requests/
     │   └── curl-http-requests.md
     └── web-proxies/
-        └── burp-repeater-command-injection.md
+        ├── burp-repeater-command-injection.md
+        └── metasploit.md
 ```
 
 > [!NOTE]
